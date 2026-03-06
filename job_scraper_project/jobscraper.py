@@ -23,4 +23,24 @@ def run_scraper():
 
     extracted_data = []
     
+    quotes = soup.find_all('div', class_='quote')
 
+    for q in quotes:
+        text = q.find("span", class_='text').text
+        author = q.find("small", class_='author').text
+        
+        extracted_data.append({
+            'Quote Content': text.replace('"','').replace('""',''),
+            'Author Name': author                           
+        })
+    df = pd.Dataframe(extracted_data)
+
+    df.to_csv('my_scraped_data.csv', index=False)
+
+    print("--- SCRAPING COMPLETED ---")
+    print(f"Found {len(extracted_data)} items")
+    print("Check your folder for 'my_scraped_data.csv'!")
+
+if __name__ == "__main__":
+     run_scraper()
+     
